@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <title>Stella ChatBot</title>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style>
+      body {
+        font-family: 'Poppins',sans-serif;
+        background-color: #0b161e;
+        color: #b8c6db;
+      }
+      h1 {
+        display: inline-block;
+        font-size: 2em;
+        margin: 0;
+        padding: 10px;
+      }
+      #stellabox {
+        margin-left: auto;
+        margin-right: auto;
+        width: 60%;
+        margin-top: 60px;
+      }
+      #userbox {
+        margin-left: auto;
+        margin-right: auto;
+        width: 40%;
+        margin-top: 60px;
+      }
+      #userInput {
+        background-color: #2a3942;
+        width: 90%;
+        border: none;
+        border-bottom: 3px solid #2a3942;
+        font-size: 17px;
+        color: #b8c6db;
+      }
+      .userText {
+        font-size: 17px;
+        text-align: right;
+        line-height: 30px;
+      }
+      .userText span {
+        background-color: #005c4b;
+        padding: 10px;
+        border-radius: 2px;
+      }
+      .stellaText {
+        font-size: 17px;
+        text-align: left;
+        line-height: 30px;
+      }
+      .stellaText span {
+        background-color: #005c4b;
+        padding: 10px;
+        border-radius: 2px;
+      }
+      #tidbit {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 300px;
+      }
+      .container {
+        margin-left: auto;
+        margin-right: auto;
+        width: 78%;
+        margin-top: 60px;
+        border: 1px solid #0b161e;
+      }
+      .content {
+        border: 2px solid #0b161e;
+      }
+    </style>
+  </head>
+  <body>
+    <center>
+      <h1>
+        Stella ChatBot
+      </h1>
+    </center>
+    <div class="content"></div>
+    <div class="container">
+      <div>
+        <div id="stellabox">
+          <p class="stellaText">
+            <span>Hi! I'm Stella</span>
+          </p>
+        </div>
+        <div id="userbox">
+          <input id="userInput" type="text" name="msg" placeholder="Type message here.." />
+        </div>
+      </div>
+      <script>
+        function getBotResponse() {
+          var rawText = $("#userInput").val();
+          var userHtml = '<p class="userText"><span>' + rawText + "</span></p>";
+          $("#userInput").val("");
+          $("#stellabox").append(userHtml);
+          document
+            .getElementById("userbox")
+            .scrollIntoView({ block: "start", behavior: "smooth" });
+          $.get("/get", { msg: rawText }).done(function(data) {
+            var botHtml = '<p class="stellaText"><span>' + data + "</span></p>";
+            $("#stellabox").append(botHtml);
+            document
+              .getElementById("userbox")
+              .scrollIntoView({ block: "start", behavior: "smooth" });
+          });
+        }
+        $("#userInput").keypress(function(e) {
+          if (e.which == 13) {
+            getBotResponse();
+          }
+        });
+      </script>
+    </div>
+  </body>
+</html>
